@@ -5,7 +5,7 @@ export default function List({ data, Item }) {
     <ScrollView style={styles.list}>
       <FlatList
         data={data}
-        renderItem={({ item }) => <Item title={item.title} />}
+        renderItem={({ item }) => <Item item={item} />}
         keyExtractor={(item) => item.id}
       />
     </ScrollView>
@@ -14,6 +14,5 @@ export default function List({ data, Item }) {
 const styles = StyleSheet.create({
   list: {
     marginTop: 20,
-    backgroundColor: "red",
   },
 });

@@ -1,46 +1,52 @@
 import { useState } from "react";
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 import List from "../components/List";
 import { IconButton } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function Home({ liked, setLiked }) {
+export default function Home({ data, setData }) {
   const [text, onChangeText] = useState("Useless Text");
-  const [data, setData] = useState([]);
 
-  const deleteItem = () => {
-    console.log("Delete item");
-    const deletedData = data.filter((item) => item.id !== data.length - 1);
+  const deleteItem = (id) => {
+    const deletedData = data.filter((item) => item.id !== id);
     setData(deletedData);
   };
-  const handelLiked = () => {
-    console.log("Liked");
-    setLiked(data);
-    console.log(liked);
+
+  const handelLiked = (item) => {
+    console.log("Liked", item);
+    const likedData = data.map((dataItem) => {
+      if (dataItem.id === item.id) {
+        return { ...dataItem, liked: !dataItem.liked };
+      }
+      return dataItem;
+    });
+    console.log("🚀 ~ likedData ~ likedData:", likedData);
+    setData(likedData);
   };
 
-  const Item = ({ title }) => (
+  const Item = ({ item }) => (
     <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{item.title}</Text>
       <View style={{ flexDirection: "row" }}>
-        <IconButton icon={<Icon name="trash-can" />} />
         <IconButton
-          onClick={handelLiked}
-          icon={<Icon name="star" style={{ color: "red", width: "10px" }} />}
+          icon={<Icon name="trash-can" size="20" color="red" />}
+          onPress={() => deleteItem(item.id)} // Pass a function that calls deleteItem with the item's id
+        />
+        <IconButton
+          onPress={() => handelLiked(item)} // Wrap handelLiked in an arrow function
+          icon={
+            <Icon
+              name={item.liked ? "star" : "star-outline"} // Adjusted to show outline when not liked
+              color={item.liked ? "yellow" : "black"}
+              size="20"
+            />
+          }
         />
       </View>
     </View>
   );
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -72,7 +78,6 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    backgroundColor: "#f9c2ff",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -80,6 +85,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
   },
   title: {
     fontSize: 32,

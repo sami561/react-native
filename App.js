@@ -5,17 +5,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 export default function App() {
-  const [liked, setLiked] = useState([]);
+  const [data, setData] = useState([]);
   const Tab = createBottomTabNavigator();
 
   return (
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home">
-          {(props) => <Home {...props} liked={liked} setLiked={setLiked} />}
+          {(props) => <Home {...props} data={data} setData={setData} />}
         </Tab.Screen>
         <Tab.Screen name="Liked">
-          {(props) => <Liked {...props} liked={liked} />}
+          {(props) => <Liked {...props} data={data} setData={setData} />}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>

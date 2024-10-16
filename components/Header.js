@@ -10,7 +10,7 @@ import React from "react";
 const Header = ({ onChangeText, text, setData, data }) => {
   const handelAdd = () => {
     console.log("Add new", text);
-    setData([...data, { id: data.length, title: text }]);
+    setData([...data, { id: data.length, title: text, liked: false }]);
   };
   return (
     <>
