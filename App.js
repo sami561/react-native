@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from "react";
+import Home from "./screens/Home";
+import Liked from "./screens/Liked";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 export default function App() {
+  const [liked, setLiked] = useState([]);
+  const Tab = createBottomTabNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home">
+          {(props) => <Home {...props} liked={liked} setLiked={setLiked} />}
+        </Tab.Screen>
+        <Tab.Screen name="Liked">
+          {(props) => <Liked {...props} liked={liked} />}
+        </Tab.Screen>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
