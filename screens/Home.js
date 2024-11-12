@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
 import List from "../components/List";
 import { IconButton } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-
+import { dark, light } from "../theme/Colors";
+import { ThemeContext } from "../hooks/ContextStore";
 export default function Home({ data, setData }) {
   const [text, onChangeText] = useState("Useless Text");
+  const { isDarkTheme } = useContext(ThemeContext);
 
   const deleteItem = (id) => {
     const deletedData = data.filter((item) => item.id !== id);
@@ -26,18 +28,27 @@ export default function Home({ data, setData }) {
   };
 
   const Item = ({ item }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.title}</Text>
+    <View
+      style={[
+        styles.item,
+        { borderColor: isDarkTheme ? dark.border : light.border },
+      ]}
+    >
+      <Text
+        style={[styles.title, { color: isDarkTheme ? dark.text : light.text }]}
+      >
+        {item.title}
+      </Text>
       <View style={{ flexDirection: "row" }}>
         <IconButton
           icon={<Icon name="trash-can" size="20" color="red" />}
-          onPress={() => deleteItem(item.id)} // Pass a function that calls deleteItem with the item's id
+          onPress={() => deleteItem(item.id)}
         />
         <IconButton
-          onPress={() => handelLiked(item)} // Wrap handelLiked in an arrow function
+          onPress={() => handelLiked(item)}
           icon={
             <Icon
-              name={item.liked ? "star" : "star-outline"} // Adjusted to show outline when not liked
+              name={item.liked ? "star" : "star-outline"}
               color={item.liked ? "yellow" : "black"}
               size="20"
             />
@@ -48,7 +59,12 @@ export default function Home({ data, setData }) {
   );
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: isDarkTheme ? dark.background : light.background,
+      }}
+    >
       <SafeAreaView>
         <View style={styles.header}>
           <Header
@@ -65,11 +81,6 @@ export default function Home({ data, setData }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-
   header: {
     flexDirection: "row",
     width: "100%",
@@ -86,7 +97,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "black",
     borderRadius: 10,
   },
   title: {
