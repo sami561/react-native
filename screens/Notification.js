@@ -80,7 +80,6 @@ export default function Notification() {
   }, []);
 
   const sendNotification = async () => {
-    console.log("Notification Sent");
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Hello! 📬",
